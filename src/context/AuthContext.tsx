@@ -14,16 +14,25 @@ type AuthContextType = {
 
 const AuthContext = createContext <AuthContextType | undefined > (undefined);
 
-
+// Local Storage initialization
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-    const [role, setRole] = useState <Role > (null);
+    const [role, setRole] = useState <Role >(() => {
+        if (typeof window !== "undefined") {
+            const storedRole = localStorage.getItem("role") as Role | null;
+            return storedRole;
+        }
+        return null;        
+
+    });
 
     const login = (role: RoleWithoutNull) => {
         setRole(role);
+        localStorage.setItem("role", role); // Store the role in local storage
     };
 
     const logout = () => {
         setRole(null);
+        localStorage.removeItem("role"); // Remove the role from local storage
     };
 
     return (
