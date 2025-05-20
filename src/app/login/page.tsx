@@ -3,7 +3,9 @@
 import { useAuth } from "@context/AuthContext";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { users } from "@app/users/page"; // ✅ missing import added
+import { initialUsers } from "@/data/users";
+
+
 
 export default function LoginPage() {
   const { login } = useAuth();
