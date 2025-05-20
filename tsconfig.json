@@ -22,7 +22,8 @@
     "paths": {
       "@context/*": ["src/context/*"],
       "@components/*": ["src/components/*"],
-      "@app/*": ["src/app/*"]
+      "@app/*": ["src/app/*"],
+      "@data/*": ["src/data/*"],
     }
   },
 

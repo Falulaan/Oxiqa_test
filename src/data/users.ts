@@ -1,12 +1,12 @@
-import type { RoleWithoutNull } from "@context/AuthContext";
+export type Role = "admin" | "user";
 
-export type UserType = {
+export type User = {
   email: string;
   password: string;
-  role: RoleWithoutNull;
+  role: Role;
 };
 
-export const initialUsers: UserType[] = [
+export const fallbackUsers: User[] = [
   {
     email: "admin@site.com",
     password: "admin123",
