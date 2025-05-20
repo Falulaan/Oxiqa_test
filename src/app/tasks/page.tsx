@@ -1,43 +1,44 @@
 "use client";
+
 import { useAuth } from "@context/AuthContext";
-import { useEffect } from "react"; 
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { mockTasks } from "@data/tasks";
 
-export default function TaskPage(){
-    const { role } = useAuth();
-    const router = useRouter();
+export default function TasksPage() {
+  const { role } = useAuth();
+  const router = useRouter();
 
-    useEffect (() => {
-        if (!role) {
-            router.push("/login");
-        }
-    }
-    , [role, router]);
+  const [email, setEmail] = useState<string | null>(null);
 
+  useEffect(() => {
     if (!role) {
-        return null; // or a loading spinner
+      router.push("/login");
     }
+  }, [role, router]);
 
-    const tasks = [
-    { id: 1, title: "Complete assessment", assignedTo: "user" },
-    { id: 2, title: "Review pull requests", assignedTo: "admin" },
-    { id: 3, title: "Fix UI bugs", assignedTo: "admin" }
-  ];
+  useEffect(() => {
+    const storedEmail = localStorage.getItem("loggedInEmail");
+    if (storedEmail) setEmail(storedEmail);
+  }, []);
 
-    return (
-        <div className="min-h-screen flex flex-col items-center justify-center p-6">
-      <h1 className="text-2xl font-bold mb-4">Tasks</h1>
-      <ul className="space-y-3 w-full max-w-md">
-        {tasks
-        
-        .filter((task) => task.assignedTo === role) // Filter tasks based on the role
-        .map((task) => (
-          <li key={task.id} className="bg-gray-800 p-4 rounded">
-            ✅ {task.title} — <span className="italic text-sm text-gray-400">({task.assignedTo})</span>
+  if (!email) return null;
+
+  const userTasks = mockTasks.filter((task) => task.user === email);
+
+  return (
+    <div className="p-6">
+      <h1 className="text-2xl font-semibold mb-4">Your Tasks</h1>
+      <ul className="space-y-4">
+        {userTasks.map((task, index) => (
+          <li
+            key={index}
+            className="bg-gray-800 text-white p-4 rounded shadow"
+          >
+            {task.title}
           </li>
         ))}
       </ul>
     </div>
-    );
-};
-
+  );
+}

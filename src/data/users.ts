@@ -13,6 +13,11 @@ export const fallbackUsers: User[] = [
     role: "admin",
   },
   {
+    email: "admin@admin.com",
+    password: "admin",
+    role: "admin",
+  },
+  {
     email: "user@site.com",
     password: "user123",
     role: "user",

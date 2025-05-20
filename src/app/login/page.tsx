@@ -37,6 +37,8 @@ export default function LoginPage() {
 
     login(foundUser.role);
     router.push("/dashboard");
+    localStorage.setItem("loggedInEmail", foundUser.email);
+
   };
 
   return (
