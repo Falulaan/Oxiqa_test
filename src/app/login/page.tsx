@@ -3,29 +3,56 @@
 import { useAuth } from "@context/AuthContext";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { users } from "@app/users/page"; // ✅ missing import added
 
 export default function LoginPage() {
   const { login } = useAuth();
-  const [role, setRole] = useState<"admin" | "user">("user");
   const router = useRouter();
 
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
   const handleLogin = () => {
-    login(role);              // set the role globally
-    router.push("/dashboard"); // redirect after login
+    if (!email || !password) {
+      setError("Please enter email and password");
+      return;
+    }
+
+    const foundUser = users.find(
+      (user) => user.email === email && user.password === password
+    );
+
+    if (!foundUser) {
+      setError("Invalid email or password");
+      return;
+    }
+
+    login(foundUser.role);
+    router.push("/dashboard");
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center gap-6">
-      <h1 className="text-2xl font-semibold">Login Page</h1>
+    <div className="min-h-screen flex flex-col items-center justify-center gap-4">
+      <h1 className="text-2xl font-semibold">Login</h1>
 
-      <select
-        value={role}
-        onChange={(e) => setRole(e.target.value as "admin" | "user")}
-        className="border border-gray-300 px-4 py-2 rounded"
-      >
-        <option value="user">User</option>
-        <option value="admin">Admin</option>
-      </select>
+      <input
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        className="border border-gray-300 px-4 py-2 rounded w-64"
+      />
+
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        className="border border-gray-300 px-4 py-2 rounded w-64"
+      />
+
+      {error && <p className="text-red-500">{error}</p>}
 
       <button
         onClick={handleLogin}

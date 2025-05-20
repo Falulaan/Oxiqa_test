@@ -1,53 +1,60 @@
 "use client";
 
+import {
+  createContext,
+  useContext,
+  useState,
+  type ReactNode,
+} from "react";
 
-import { createContext, useContext, useState, ReactNode } from "react";
+// Define all role types
+export type Role = "admin" | "user" | null;
 
-type Role = "admin" | "user" | null; 
-type RoleWithoutNull = Exclude <Role, null > ;
+// Export type without null (for login-safe roles)
+export type RoleWithoutNull = Exclude<Role, null>;
+
+// Context structure
 type AuthContextType = {
-    role: Role;
-    login: (role: RoleWithoutNull) => void;
-    logout: () => void;
+  role: Role;
+  login: (role: RoleWithoutNull) => void;
+  logout: () => void;
 };
 
+// Create the context
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const AuthContext = createContext <AuthContextType | undefined > (undefined);
-
-// Local Storage initialization
+// AuthProvider component
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-    const [role, setRole] = useState <Role >(() => {
-        if (typeof window !== "undefined") {
-            const storedRole = localStorage.getItem("role") as Role | null;
-            return storedRole;
-        }
-        return null;        
+  const [role, setRole] = useState<Role>(() => {
+    if (typeof window !== "undefined") {
+      const storedRole = localStorage.getItem("role") as Role | null;
+      return storedRole;
+    }
+    return null;
+  });
 
-    });
+  const login = (newRole: RoleWithoutNull) => {
+    setRole(newRole);
+    localStorage.setItem("role", newRole);
+  };
 
-    const login = (role: RoleWithoutNull) => {
-        setRole(role);
-        localStorage.setItem("role", role); // Store the role in local storage
-    };
+  const logout = () => {
+    setRole(null);
+    localStorage.removeItem("role");
+  };
 
-    const logout = () => {
-        setRole(null);
-        localStorage.removeItem("role"); // Remove the role from local storage
-    };
-
-    return (
-        <AuthContext.Provider value={{ role, login, logout }}>
-            {children}
-        </AuthContext.Provider>
-    );
+  return (
+    <AuthContext.Provider value={{ role, login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
-
+// Custom hook to use auth
 export function useAuth() {
-    const context = useContext(AuthContext);
-    if (!context) {
-        throw new Error("useAuth must be used within an AuthProvider");
-        
-    };
-    return context;
-};
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
+}

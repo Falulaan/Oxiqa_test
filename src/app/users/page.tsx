@@ -2,6 +2,25 @@
 import { useAuth } from "@context/AuthContext";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { RoleWithoutNull } from "@context/AuthContext";
+
+
+export const users: {
+  email: string;
+  password: string;
+  role: RoleWithoutNull;
+}[] = [
+  {
+    email: "admin@site.com",
+    password: "admin123",
+    role: "admin",
+  },
+  {
+    email: "user@site.com",
+    password: "user123",
+    role: "user",
+  },
+];
 
 export default function UsersPage() {
     const { role } = useAuth();
