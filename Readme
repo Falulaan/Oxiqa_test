@@ -1,3 +1,11 @@
+Please use below login details to test the website :
+
+    email: "admin@site.com",
+    password: "admin123",
+
+More users can be added in the testing process
+
+
 FUNCTIONS AND REQUIREMENTS
 ________________________________________________________________________________
 1. Authentication with User Roles ✅
