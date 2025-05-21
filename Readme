@@ -1,0 +1,45 @@
+FUNCTIONS AND REQUIREMENTS
+________________________________________________________________________________
+1. Authentication with User Roles ✅
+“Login functionality with two roles: admin and user.”
+•	Accepts email + password
+•	Authenticates based on localStorage (fallback to default list if none)
+•	Logged-in email stored in localStorage
+•	Role is stored and used for routing logic
+•	useAuth() provides role and login method via context
+________________________________________________________________________________
+2. User Management Page (admin only) ✅
+“Accessible only by admin. Display list of users. Optional: Add/Edit/Delete.”
+•	Redirects non-admins to /dashboard
+•	Displays all users in a styled list
+•	Supports Delete for any user
+•	Supports Add User with form (email, password, role)
+•	Persists user changes in localStorage
+________________________________________________________________________________
+3. Task Management Page ✅
+“All logged-in users can view their own tasks (mock data is OK).”
+•	Only accessible after login (redirects if not logged in)
+•	Filters tasks by loggedInEmail
+•	Tasks are stored in mockTasks array
+•	Hydration-safe — uses useEffect to load email
+________________________________________________________________________________
+4. Role-Based Navigation ✅
+“Shared layout with nav links, conditionally rendered based on role.”
+•	Navbar.tsx adapts based on role:
+o	Shows /users only for admin
+o	Shows /tasks for all roles
+o	Hides links if not logged in
+•	Logout button clears session and returns to login
+________________________________________________________________________________
+5. Tailwind CSS for Layout and Design ✅
+“Use Tailwind CSS for layout and styling.”
+•	Fully built using Tailwind classes
+•	Inputs, buttons, and containers follow a consistent design
+•	Uses utility-first styling instead of raw CSS
+________________________________________________________________________________
+Technical Expectations Met
+•	Framework: Next.js (App Router, latest stable) ✅
+•	Auth Approach: Custom localStorage + context ✅
+•	Data: Static fallback users and tasks (JSON-style) ✅
+•	Codebase: Modular, logically split across components, contexts, and pages ✅
+
